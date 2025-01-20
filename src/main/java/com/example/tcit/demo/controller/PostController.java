@@ -43,10 +43,10 @@ public class PostController {
     @PostMapping("/crear")
     public ResponseEntity<?> crear(@Valid @RequestBody PostDto postRequestDto) {
         try {
-            Post createdPost = postService.crear(postRequestDto);
+            Post crear = postService.crear(postRequestDto);
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Post creado exitosamente");
-            response.put("datos", createdPost);
+            response.put("datos", crear);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -82,14 +82,10 @@ public class PostController {
     @PostMapping("/filtro")
     public ResponseEntity<?> filtrarNombre(@RequestBody Map<String, String> requestBody) {
         try {
-            String nombre = requestBody.get("nombre");
-            if (nombre == null || nombre.isEmpty()) {
-                throw new IllegalArgumentException("El nombre para filtrar no puede estar vacío");
-            }
-            List<PostDto> filteredPosts = postService.filtrarNombre(nombre);
+            List<PostDto> filtrar = postService.filtrarNombre((PostDto) requestBody);
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Nombre encontrado");
-            response.put("datos", filteredPosts);
+            response.put("datos", filtrar);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             Map<String, Object> errorResponse = new HashMap<>();

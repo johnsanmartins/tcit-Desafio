@@ -27,7 +27,6 @@ public class PostService {
 
 
     public Post crear(PostDto postDto) {
-        // Validaciones
         if (postDto.getNombre() == null || postDto.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre del post no puede estar vacío");
         }
@@ -35,17 +34,10 @@ public class PostService {
         if (postDto.getDescripcion() == null || postDto.getDescripcion().isEmpty()) {
             throw new IllegalArgumentException("La descripción del post no puede estar vacía");
         }
-
-        // Mapeo usando el mapper
         Post post = PostMapper.toEntity(postDto);
-
-        // Guardar en la base de datos
         return postRepository.save(post);
     }
-
-
-
-    // Eliminar un post por ID
+    
     public void eliminar(String id) {
         Optional<Post> post = postRepository.findById(id);
 
@@ -56,14 +48,14 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public List<PostDto> filtrarNombre(String nombre) {
-        if (nombre == null || nombre.isEmpty()) {
+    public List<PostDto> filtrarNombre(PostDto postDto) {
+        if (postDto.getNombre() == null || postDto.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre para filtrar no puede estar vacío");
         }
 
         List<Post> posts = postRepository.findAll()
                 .stream()
-                .filter(post -> post.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+                .filter(post -> post.getNombre().toLowerCase().contains(postDto.getNombre().toLowerCase()))
                 .collect(Collectors.toList());
 
         if (posts.isEmpty()) {
