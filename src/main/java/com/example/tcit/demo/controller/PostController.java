@@ -43,7 +43,6 @@ public class PostController {
     @PostMapping("/crear")
     public ResponseEntity<?> crear(@Valid @RequestBody PostDto postRequestDto) {
         try {
-
             Post createdPost = postService.crear(postRequestDto);
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Post creado exitosamente");
